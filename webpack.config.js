@@ -1,7 +1,7 @@
 var webpack = require('webpack');
 
 module.exports = {
-    entry: './src/js/entry.js', //入口文件
+    entry: './src/js/example.js', //入口文件
     output: {
         path: __dirname + "/dist",
         filename:'index.js'

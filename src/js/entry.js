@@ -1,4 +1,5 @@
 import React from 'react';
 import ReactDom from 'react-dom';
 
-ReactDom.render(<div>您好，我是virtual Dom</div>, document.getElementById('root'));
+
+ReactDom.render(<div>hello, i am virtual dom</div>, document.getElementById('root'));
