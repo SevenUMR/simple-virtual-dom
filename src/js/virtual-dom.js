@@ -3,6 +3,21 @@ class Element {
         this.tagName = tagName;
         this.props = props;
         this.children = children;
+
+        this.key = props ? props.key : void 2333;
+    
+        let childrenCount = 0
+    
+        this.children.map((child, i) => {
+            if (child instanceof Element) {
+                childrenCount += child.childrenCount
+            } else {
+                children[i] = '' + child
+            }
+            childrenCount ++
+        });
+        
+        this.childrenCount = childrenCount
     }
     render() {
         // 创建元素

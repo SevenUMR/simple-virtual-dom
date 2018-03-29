@@ -1,4 +1,5 @@
 import Type from './static-params';
+import ListDiff from './list-diff'; 
 
 class Diff {
     constructor() {
@@ -27,12 +28,23 @@ class Diff {
                     const childrenDiff = this.diffChildren(oldTree.children, newTree.children);
                     if (childrenDiff && childrenDiff.type === 0) {
                         // 顺序改动
-                        currentDiff.push({ type: Type.CHILDRENMOVE, content: childrenDiff.move })
+                        currentDiff.push({ type: Type.MOVE, content: childrenDiff.move })
                     } else if (childrenDiff && childrenDiff.type === 1) {
-                        // 内容改动这里不做调整，放到childrenDiff中做处理
+                        // 内容改动
+                        let node = null;
+                        oldTree.children.map((child, i) => {
+                            let currentIndex = (node && node.count) ? (index + node.childrenCount + 1) : (index + 1);
+                            this.deepMap(child, childrenDiff.newChild, index, diff);
+                            node = child;
+                        })
                     }
+                } else {
+                    currentDiff.push({ type: patch.REPLACE, node: newNode })
                 }
             }
+        }
+        if (currentDiff.length) {
+            diffs[index] = currentDiff;
         }
     }
     diffProps(oldProps, newProps) {
@@ -58,8 +70,15 @@ class Diff {
         }
         return count === 0 ? null : propsDiff;
     }
+    diffChildren(oldChildren, newChildren) {
+        const diffs = ListDiff(oldChildren, newChildren, 'key');
+        newChildren = diffs.children;
+        return diffs.moves.length ? { type: 0, move: diffs.moves } : { type: 1, newChild: newChildren }
+    }
 }
 
 const isStringNode = (node) => {
     return typeof node === 'string' || typeof node === 'number';
 }
+
+export default Diff;
