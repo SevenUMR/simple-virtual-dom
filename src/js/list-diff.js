@@ -59,12 +59,10 @@ const listDiff = (oldList, newList, key) => {
                     // 如果老数组内有该元素，判断下一个是否相等
                     var nextItemKey = getItemKey(final[n + 1], key)
                     if (nextItemKey === itemKey) {
-                        // 相等则表示位置正确，新数组以及临时数组都删除目前的值
                         remove(m);
                         removeTemp(final, n);
                         n ++;
                     } else {
-                        // 不相等表示位置不对，直接insert到指定位置
                         insert(m, item);
                     }
 
